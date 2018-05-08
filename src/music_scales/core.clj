@@ -12,20 +12,33 @@
   ([root steps]
    (steps->notes root steps false))
   ([root steps sharps?]
-   (loop [notes []
-          remaining (take 12 (drop-while #(not= root %) (cycle (if sharps?
-                                                                 chromatic-sharps
-                                                                 chromatic-flats))))
-          steps steps]
-     (if (empty? steps)
-       notes
-       (recur (conj notes (first remaining))
-              (drop (first steps) remaining)
-              (rest steps))))))
+   (let [chromatics (cycle (if sharps? chromatic-sharps chromatic-flats))]
+     (loop [notes []
+            remaining (take 12 (drop-while #(not= root %) chromatics))
+            steps steps]
+       (if (empty? steps)
+         notes
+         (recur (conj notes (first remaining))
+                (drop (first steps) remaining)
+                (rest steps)))))))
+
+(defn scale->thirds [scale]
+  (flatten (take 7 (partition 1 2 (cycle scale)))))
+
+(defn scale->modes [scale]
+  (take 7 (partition 7 1 (cycle scale))))
+
+(defn scale->chords [scale]
+  (take 7 (map scale->thirds (scale->modes scale))))
 
 (comment
-  (steps->notes "C" major-scale)
+  (def c (steps->notes "C" major-scale))
+  (scale->modes c)
+  (scale->chords c)
   (steps->notes "F" major-scale)
+  (-> "F"
+      (steps->notes major-scale)
+      scale->modes)
   (steps->notes "E" major-scale true)
   (steps->notes "A" major-scale true)
   :end)
