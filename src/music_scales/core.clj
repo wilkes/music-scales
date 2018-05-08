@@ -31,7 +31,26 @@
 (defn scale->chords [scale]
   (take 7 (map scale->thirds (scale->modes scale))))
 
+(def P1 0)
+(def m2 1)
+(def M2 2)
+(def m3 3)
+(def M3 4)
+(def P4 5)
+(def A4 6)
+(def d5 6)
+(def P5 7)
+(def m6 8)
+(def M6 9)
+(def m7 10)
+(def M7 11)
+
+(defn intervals->notes [root intervals]
+  (let [chromatic (vec (take 12 (drop-while #(not= root %) (cycle chromatic-flats))))]
+    (concat [(first chromatic)] (map #(get chromatic %) intervals))))
+
 (comment
+  (intervals->notes "C" [m3 d5 m2])
   (def c (steps->notes "C" major-scale))
   (scale->modes c)
   (scale->chords c)
