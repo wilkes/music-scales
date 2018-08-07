@@ -68,6 +68,8 @@
   (def c (steps->notes "C" major-scale))
   (scale->modes c)
   (scale->chords c)
+  (scale->thirds c)
+  (scale->chords c)
 
   (steps->notes "F" major-scale)
   (-> "F"
@@ -78,6 +80,8 @@
 
   (def c-mm (steps->notes "C" melodic-minor-scale))
   (scale->modes c-mm)
+  (scale->thirds c-mm)
+  (scale->chords c-mm)
   :end)
 
 
