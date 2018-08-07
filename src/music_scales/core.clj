@@ -7,6 +7,7 @@
 (def h 1) ;; half step
 
 (def major-scale [w w h w w w h])
+(def melodic-minor-scale [w h w w w w w])
 
 (def intervals {:P1 0
                 :m2 1
@@ -67,12 +68,16 @@
   (def c (steps->notes "C" major-scale))
   (scale->modes c)
   (scale->chords c)
+
   (steps->notes "F" major-scale)
   (-> "F"
       (steps->notes major-scale)
       scale->modes)
   (steps->notes "E" major-scale true)
   (steps->notes "A" major-scale true)
+
+  (def c-mm (steps->notes "C" melodic-minor-scale))
+  (scale->modes c-mm)
   :end)
 
 
